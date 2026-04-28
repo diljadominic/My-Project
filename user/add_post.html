@@ -1,0 +1,135 @@
+{% extends "user/user_base.html" %}
+
+{% block content %}
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div class="row justify-content-center">
+        <div class="col-md-offset-3 col-md-6 col-xs-12">
+            <div class="well well-sm well-social-post">
+                <form>
+                    <ul class="list-inline" id='list_PostActions'>
+                        <li class='active'><a href='#'>Create a post</a></li>
+                    </ul>
+                    <textarea class="form-control" rows="8" name="post_desc" placeholder="What's in your mind?"></textarea>
+                    <label for="imageUpload">Upload Image(s):</label>
+                    <input type="file" id="imageUpload" name="post_images" multiple accept="image/*" onchange="previewImages(event)"> <!-- Allow multiple image uploads -->
+                    <div id="imagePreview" class="mt-2"></div> <!-- Area to display preview images -->
+                    <div class="text-center mb-4">
+                        <input type="submit" value="POST" class='btn btn-primary btn-xs'>
+                    </div>
+                   
+                </form>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+
+
+<style>
+    		                body{margin-top:20px; background-color: #eeeeee;}
+
+.well-social-post {
+    border-radius: 0;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding:0;
+}
+
+.well-social-post .glyphicon,
+.well-social-post .fa,
+.well-social-post [class^='icon-'],
+.well-social-post [class*='icon-'] {
+    font-weight: bold;
+    color: #999999;
+}
+
+.well-social-post a,
+.well-social-post a:hover,
+.well-social-post a:active,
+.well-social-post a:focus {
+    text-decoration: none;
+}
+
+#imagePreview img {
+        width: 100px; /* Adjust the size of preview images as needed */
+        height: auto;
+        margin-right: 5px; /* Add margin between preview images */
+    }
+.well-social-post .list-inline {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.well-social-post .list-inline li {
+    position: relative;
+}
+
+.well-social-post .list-inline li.active::after {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    content: "";
+    top: 30px;
+    left: 50%;
+    left: -webkit-calc(50% - 5px);
+    left: -moz-calc(50%-5px);
+    left: calc(50% - 5px);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #dddddd;
+}
+
+.well-social-post .list-inline li.active a {
+    color: #222222;
+    font-weight: bold;
+}
+
+.well-social-post .form-control {
+    width: 100%;
+    min-height: 100px;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.well-social-post .list-inline {
+    padding: 10px;
+}
+
+.well-social-post .list-inline li + li {
+    margin-left: 10px;
+}
+
+.well-social-post .post-actions {
+    margin: 0;
+    background-color: #f6f7f8;
+    border-top-color: #e9eaed;
+}                         
+</style>
+
+<script>
+    function previewImages(event) {
+        var preview = document.getElementById('imagePreview');
+        preview.innerHTML = ''; // Clear previous preview images
+
+        var files = event.target.files;
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var image = document.createElement('img');
+                image.src = e.target.result;
+                preview.appendChild(image);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
+{% endblock  %}
